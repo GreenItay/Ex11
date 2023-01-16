@@ -75,6 +75,7 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
 
 def get_all_words_with_length_n(n: int, words: Iterable[str]) -> List[str]:
     ...
+    # use the count("qu") to find the range of n's to scan: [n - count("qu"), n]
 
 
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
