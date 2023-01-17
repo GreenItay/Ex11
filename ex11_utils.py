@@ -59,24 +59,40 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
     :return: List[Tuple(int,int)] of legal paths of length n
     """
 
-    list_of_locations = [[(i,j) for i in range(4)] for j in range(4)]
+    list_of_locations = [(i,j) for i in range(4) for j in range(4)]
     path_permutations_of_length_n = list(itertools.permutations(list_of_locations, n)) # all the permutations of n locations
     legal_permutations = list()
     for path in path_permutations_of_length_n:
         if(is_valid_path(board, path, words)):
-            legal_permutations.append(path)
+            legal_permutations.append(list(path))
     return legal_permutations
 
 
 def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
     """
     this function returns all the paths for words of length n"""
-    pass
+    legal_permutations = list()
+    list_of_locations = [(i,j) for i in range(4) for j in range(4)]
+    list_of_possible_permutations = list()
+    double_letterts = count_double_letters_on_board(board)
+    for i in range(max(n//2,  n - double_letterts), n+1):
+        list_of_possible_permutations = list(itertools.permutations(list_of_locations, i))
+        for path in list_of_possible_permutations:
+            valid = is_valid_path(board, path, words)
+            if(valid is None): continue
+            elif(len(valid) == n):
+                legal_permutations.append(list(path))
+    return legal_permutations
 
-def get_all_words_with_length_n(n: int, words: Iterable[str]) -> List[str]:
+def count_double_letters_on_board(board) -> int:
     ...
     # use the count("qu") to find the range of n's to scan: [n - count("qu"), n]
-
+    count = 0
+    for row in board:
+        for col in board:
+            if(len(col) == 2):
+                count += 1
+    return count
 
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     pass
