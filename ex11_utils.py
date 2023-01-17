@@ -5,6 +5,11 @@ Board = List[List[str]]
 Path = List[Tuple[int, int]]
 BOARD_SIZE = 4
 
+def partial_is_valid_path(board, path, words):
+    word = ""
+    for loc in word:
+        word += word[loc[0]][loc[1]]
+    return any(key.startswith(word) for key in words)
 
 def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[str]:
     """
@@ -98,12 +103,32 @@ def count_double_letters_on_board(board) -> int:
     return count
 
 def find_length_n_words_back_tracking(n: int, board: Board, words: Iterable[str]) -> List[Path]:
-    word = ""
+    legal_paths = list()
     for i in range(len(board)):
         for j in range(len(board)):
-            ...
+            for path in find_length_n_words_back_tracking(n, board, [(i,j)], words):
+                legal_paths.append(path)
     ...
+def find_length_n_words_back_tracking(n, board, visited_locations, words, current_location):
+    if(n == 0):
+        yield []
+    if(n == 1):
+        word = is_valid_path(visited_locations)
+        if(word):
+            yield word
+    elif(partial_is_valid_path(board, visited_locations, words)):
+        new_visited =visited_locations[:].append(board[current_location[0]][current_location[1]])
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if((i, j) not in visited_locations and is_in_range((i,j))):
+                    yield find_length_n_words_back_tracking(n - 1, board, new_visited,\
+                     (i,j))
 
+def is_in_range(loc, board_size):
+    return 0<=loc[0]<board_size and 0<=loc[1]<board_size
+
+
+    ...
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     ...
 
