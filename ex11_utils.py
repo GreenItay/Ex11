@@ -60,10 +60,12 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
     """
 
     list_of_locations = [(i,j) for i in range(4) for j in range(4)]
-    path_permutations_of_length_n = list(itertools.permutations(list_of_locations, n)) # all the permutations of n locations
+    path_permutations_of_length_n = itertools.permutations(list_of_locations, n) # all the permutations of n locations
     legal_permutations = list()
     for path in path_permutations_of_length_n:
-        if(is_valid_path(board, path, words)):
+        valid = is_valid_path(board, path, words)
+        if(valid):
+            words[valid] = False # this word has been seen
             legal_permutations.append(list(path))
     return legal_permutations
 
@@ -75,12 +77,13 @@ def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path
     list_of_locations = [(i,j) for i in range(4) for j in range(4)]
     list_of_possible_permutations = list()
     double_letterts = count_double_letters_on_board(board)
+    list_of_possible_permutations = itertools.permutations(list_of_locations, n)
     for i in range(max(n//2,  n - double_letterts), n+1):
-        list_of_possible_permutations = list(itertools.permutations(list_of_locations, i))
         for path in list_of_possible_permutations:
             valid = is_valid_path(board, path, words)
             if(valid is None): continue
             elif(len(valid) == n):
+                words[valid] = False # this word has been seen
                 legal_permutations.append(list(path))
     return legal_permutations
 
@@ -94,5 +97,14 @@ def count_double_letters_on_board(board) -> int:
                 count += 1
     return count
 
+def find_length_n_words_back_tracking(n: int, board: Board, words: Iterable[str]) -> List[Path]:
+    word = ""
+    for i in range(len(board)):
+        for j in range(len(board)):
+            ...
+    ...
+
 def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
-    pass
+    ...
+
+
