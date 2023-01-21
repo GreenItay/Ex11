@@ -75,7 +75,7 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
     return legal_permutations
 
 
-def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
+def find_length_n_words_2(n: int, board: Board, words: Iterable[str]) -> List[Path]:
     """
     this function returns all the paths for words of length n"""
     legal_permutations = list()
@@ -102,27 +102,35 @@ def count_double_letters_on_board(board) -> int:
                 count += 1
     return count
 
-def find_length_n_words_back_tracking(n: int, board: Board, words: Iterable[str]) -> List[Path]:
+def find_length_n_words(n: int, board: Board, words: Iterable[str]) -> List[Path]:
     legal_paths = list()
     for i in range(len(board)):
         for j in range(len(board)):
-            for path in find_length_n_words_back_tracking(n, board, [(i,j)], words):
-                legal_paths.append(path)
+            
+            find_length_n_words_helper(n, board, [(i,j)], words, (i,j), legal_paths)
+                
+    return legal_paths
     ...
-def find_length_n_words_back_tracking(n, board, visited_locations, words, current_location):
+def find_length_n_words_helper(n, board, visited_locations, words, current_location, legal_paths):
     if(n == 0):
-        yield []
+        #legal_paths.append([])
+        return
     if(n == 1):
-        word = is_valid_path(visited_locations)
+        word = is_valid_path(board, visited_locations, words)
         if(word):
-            yield word
+            legal_paths.append(visited_locations)
     elif(partial_is_valid_path(board, visited_locations, words)):
-        new_visited =visited_locations[:].append(board[current_location[0]][current_location[1]])
+        
         for i in range(-1, 2):
             for j in range(-1, 2):
-                if((i, j) not in visited_locations and is_in_range((i,j))):
-                    yield find_length_n_words_back_tracking(n - 1, board, new_visited,\
-                     (i,j))
+                potential_location = (i + current_location[0], j + current_location[1])
+                if(potential_location not in visited_locations and is_in_range(potential_location, 4)):
+                    new_visited = visited_locations[:]
+                    new_visited.append(potential_location)
+                    block_str = board[potential_location[0]][potential_location[1]]
+                    find_length_n_words_helper(n - len(block_str), board, new_visited, words,\
+                     potential_location, legal_paths)
+        
 
 def is_in_range(loc, board_size):
     return 0<=loc[0]<board_size and 0<=loc[1]<board_size
