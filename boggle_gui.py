@@ -51,7 +51,7 @@ class BoggleGUI:
         
         self.__seen_words_text = tki.Text(self.__side_frame, width = 200, height = 80, wrap = tki.NONE,
 		        xscrollcommand = h1.set,
-		        yscrollcommand = v1.set)
+		        yscrollcommand = v1.set, font=("Courier", 30))
         self.__seen_words_text.pack(side=tki.BOTTOM, fill=tki.X)
         h1.config(command=self.__seen_words_text.xview)
         v1.config(command=self.__seen_words_text.yview)
