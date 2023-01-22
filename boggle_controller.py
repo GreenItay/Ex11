@@ -6,7 +6,7 @@ class Controller:
         self.__board = randomize_board()
         self.__words = self.load_words("boggle_dict.txt")
         self.__model = Model(self.__board, self.__words)
-        self.__gui = BoggleGUI(self.__board, self.submit,self.cancel,self.letter_press)
+        self.__gui = BoggleGUI(self.__board, self.submit,self.cancel, self.restart, self.letter_press)
         
         self.__gui.run()
         
@@ -34,6 +34,14 @@ class Controller:
             for line in f:
                 words[line.strip()] = True
         return words
+
+    def restart(self):
+        print("yes")
+        self.__board = randomize_board()
+        self.__model = Model(self.__board, self.__words)
+        self.__model.set_score_to_zero()
+        self.__gui.restart_game()
+        self.__gui.set_board(self.__board)
 
 if __name__ == "__main__":
     c = Controller()

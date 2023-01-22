@@ -37,3 +37,6 @@ class Model:
 
     def __add_to_score(self, path_length : int) -> None:
         self.__score += path_length ** 2
+
+    def set_score_to_zero(self):
+        self.__score = 0
