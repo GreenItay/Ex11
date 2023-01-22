@@ -200,12 +200,14 @@ class BoggleGUI:
         self.__start_button.pack(pady=100)
 
     def set_board(self, board):
+
         self.__board = board
         self.__start_button.destroy()
         self.__start_game()
 
     def restart_game(self):
         self.set_score_display()
+        self.set_current_word_display()
         self.__seen_words_text.delete(0, tki.END)
 
 
